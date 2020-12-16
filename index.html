@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Hi WebAR</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<link rel="shortcut icon" href="#" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+		function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- //for-mobile-apps -->
+<link href="stylesheets/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="stylesheets/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="stylesheets/chocolat.css" type="text/css" media="screen"><!-- chocolate css for gallery light box-->
+<!-- animation -->
+<link href="stylesheets/animate.css" rel="stylesheet" type="text/css" media="all">
+<!-- //animation --> 
+<link href="stylesheets/index-style.css" rel="stylesheet" type="text/css" media="all" />
+<script src="build/jquery-1.11.1.min.js"></script>
+<script src="build/bootstrap.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- googlefonts -->
+<link href="stylesheets/google-font1.css" rel="stylesheet">
+<link href="stylesheets/google-font2.css" rel="stylesheet">
+<!-- //googlefonts -->
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top"> 
+		<!-- header -->
+		<div class="header-w3layouts"> 
+			<!-- Navigation -->
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container">
+					<div class="navbar-header page-scroll">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+							<span class="sr-only">WEBAR</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<h1><a class="navbar-brand" href="index.html">WEBAR</a></h1>
+					</div> 
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse navbar-ex1-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+							<li class="hidden"><a class="page-scroll" href="#page-top"></a></li>
+							<li><a class="page-scroll scroll active" href="#home">Home</a></li>
+							<li><a class="page-scroll scroll" href="#about">About</a></li>
+							<li><a class="page-scroll scroll" href="#port">Examples</a></li>
+							<li><a class="page-scroll scroll" href="#edu">Support</a></li>
+						</ul>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+				<!-- /.container -->
+			</nav>  
+		</div>	
+		<!-- //header -->
+		<div class="header jarallax" id="home">
+			<div class="container">
+				<div class="banner-text text-center">
+					<h2>Hi, WebAR!</h2>
+					<h3> - AR developer - </h3>
+					<p>基于Web浏览器页面体验AR增强现实，无需安装APP,轻松实现跨平台。 </p>
+					<div class="w3l-button banner-btn">
+							<a href="#about">LEARN MORE</a>
+					</div>
+				</div>	
+				<div class="w3-arrow bounce animated">
+				<a href="#about" class="scroll"><i class="fa fa-angle-down" aria-hidden="true"></i></a>
+			</div>
+			</div>
+			
+		</div>
+		
+	<div class="about" id="about">
+		<div class="container">	
+				<h3 class="w3l-heading">About WebAR</h3>
+			<div class="col-md-4 w3-about-top">
+				<img src="images/3.jpg" class="img-responsive" alt="about-img"/>
+			</div>
+			<div class="col-md-8 w3l-about">
+					<div class="w3ls-heading">
+						<h2>WebAR可以轻松地运行在Android、iOS、Windows、Mac系统的Web浏览器上，具有优秀的跨平台性； 模式轻，无需APP，通过浏览器直接开启AR功能，部署方便快捷；开发成本低, URL格式实现链式传播，符合社交媒体信息流动的基本技术要求。
+						</h2>
+					</div>
+					<div class="w3ls-about-info">
+						<p>WebAR 可以扫描当前环境中的识别标记，呈现3D模型、动画与真实环境的叠加增强效果。本页面提供一组简单的示例，介绍基于Javascript的增强现实库中的各种特性，包括 AR.js 与 Three.js。查看AR示例需要一个带有摄像头的设备以及一个Hiro或Kanji或LetterA标记图案（点击Examples下方按钮下载图片，打印或显示在第二个设备上）。</p>
+					</div>
+					<div class="w3l-button">
+						<a href="#port">have a try!</a>
+					</div>
+			</div>	
+			<div class="clearfix"></div>
+		</div>
+		
+	</div>
+
+	<!-- Portfolio -->
+       <div class="portfolio" id="port">
+		       <div class="port-head">
+							<h3 class="w3l-heading">Examples</h3>
+						</div>
+            <ul class="simplefilter">
+                <li class="active" data-filter="all">All</li>
+                <a href="markers/hiro.png" target="_blank"><li data-filter="2">hiro.png</li></a>
+                <a href="markers/kanji.png" target="_blank"><li data-filter="3">kanji.png</li></a>
+                <a href="markers/letterA.png" target="_blank"><li data-filter="1">letterA.png</li></a>
+                <a href="markers/letterB.png" target="_blank"><li data-filter="1">letterB.png</li></a>
+                <a href="markers/b910.jpg" target="_blank"><li data-filter="1">B910.jpg</li></a>
+                <a href="markers/schoolLogo2.jpg" target="_blank"><li data-filter="1">schoolLogo.jpg</li></a>
+            </ul>
+     
+            <div class="filtr-container">
+                <div class="  filtr-item gallery-t" data-category="1, 3" data-sort="Busy streets">
+				 <a href="cubes.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+	
+					<figure class="w3ls-gallery">
+					 <img src="images/custom-patterns.png" class="img-responsive" alt=" " />	
+					 <figcaption class="w3layouts-caption">
+							<h3>Hello Cubes</h3>
+							<h5>识别场景中的hiro, kanji, LetterA, LetterB 等标记，分别显示不同颜色的立方体，叠加在真实场景中。</h5>
+						</figcaption>
+					</figure>
+				</a>
+                </div>
+				<div class=" filtr-item" data-category="1, 3" data-sort="City wonders">
+                    <a href="ShadowBalls.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+
+					<figure class="w3ls-gallery">
+					 <img src="images/shadow-balls.png" class="img-responsive" alt=" " />	
+					 <figcaption class="w3layouts-caption">
+							<h3>Shadow Balls</h3>
+							<h5>围绕kanji标记创建四色反弹篮球, 这些球将阴影投射到包含标记的平面上。</h5>
+						</figcaption>
+					</figure>
+				</a>
+
+                </div>
+				<div class=" filtr-item" data-category="2" data-sort="Luminous night">
+                   <a href="DogFbx.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+
+					<figure class="w3ls-gallery">
+					 <img src="images/dog.png" class="img-responsive" alt=" " />	<figcaption class="w3layouts-caption">
+							<h3>Loading Dog Model</h3>
+							<h5>识别场景中的 LetterA 图片标记，加载一个虚拟的带有动作的狗狗3D模型（fbx格式），显示在真实环境中。 </h5>
+						</figcaption>
+					</figure>
+				</a>
+                </div>
+                <div class="  filtr-item gallery-t" data-category="1, 3" data-sort="Busy streets">
+				 <a href="ModelGltf.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+	
+					<figure class="w3ls-gallery">
+					 <img src="images/models.png" class="img-responsive" alt=" " />	<figcaption class="w3layouts-caption">
+							<h3>Loading Many Models</h3>
+							<h5>识别LetterA 图片标记，通过UI菜单选择要加载的3D模型（Gltf格式），并控制动画的播放，显示在真实环境中，有4种模型可供选择。 </h5>
+						</figcaption>
+					</figure>
+				</a>
+                </div>
+                <div class="  filtr-item" data-category="3" data-sort="In production">
+                   <a href="GiftObj.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+
+					<figure class="w3ls-gallery">
+					 <img src="images/gift.png" class="img-responsive" alt=" " />	<figcaption class="w3layouts-caption">
+							<h3>Loading Gift Model</h3>
+							<h5>识别场景中的 LetterA 图片标记，加载一个虚拟的气球3D模型（obj格式），并以一定的速度旋转，显示在真实环境中。 </h5>
+						</figcaption>
+					</figure>
+				</a>
+
+                </div>
+                <div class=" filtr-item" data-category="3, 2" data-sort="Industrial site">
+                  <a href="cucGlobe.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+
+					<figure class="w3ls-gallery">
+					 <img src="images/cuc_globe.jpg" class="img-responsive" alt=" " />	
+					 <figcaption class="w3layouts-caption">
+							<!-- <h3>Rotating Globe</h3>
+							<h5>在kanji或LetterA标记上放置一个旋转的地球模型，显示在真实场景中，并跟随设备移动。</h5> -->
+							<h3>CUC Globe</h3>
+							<h5>识别B910门牌号或中传校徽图案，加载虚拟的地球模型，显示在真实场景中。</h5>
+						</figcaption>
+					</figure>
+				</a>
+                </div>
+                <div class=" filtr-item" data-category="2, 3" data-sort="Peaceful lake">
+                    <a href="water.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+
+					<figure class="w3ls-gallery">
+					 <img src="images/water-effect-AR.png" class="img-responsive" alt=" " />	<figcaption class="w3layouts-caption">
+							<h3>Water Effect</h3>
+							<h5>识别Hiro标记，显示一种动画效果，看起来像水从圆柱孔中流出，显示在标记上方，然后被吸收到地板中。</h5>
+						</figcaption>
+					</figure>
+					</a>
+                </div>
+                 <div class="  filtr-item gallery-t" data-category="1, 3" data-sort="Busy streets">
+				 <a href="cucVideo.html" target="_blank" class="b-link-stripe b-animate-go  thickbox">
+	
+					<figure class="w3ls-gallery">
+					 <img src="images/cuc_video.jpg" class="img-responsive" alt=" " />	<figcaption class="w3layouts-caption">
+							<!-- <h3>Refraction Effect</h3>
+							<h5>识别 Kanji 标记，在标记上方创建旋转环形结，结的曲面折射其后面的现实场景。</h5> -->
+							<h3>CUC Video</h3>
+							<h5>识别中传校徽图案schoolLogo.jpg，加载校歌MV视频，浮动叠加在真实场景中。</h5>
+						</figcaption>
+					</figure>
+				</a>
+                </div>
+               <div class="clearfix"> </div>
+	        </div>
+		 </div>
+<!-- //Portfolio -->
+<!--Education-->
+	<div id="edu" class="agile-edu">
+		<div class="container">	
+				<h3 class="w3l-heading">Support</h3>
+			<div class="work-info"> 
+				<div class="col-md-6 col-sm-6 col-xs-6 work-right work-right2"> 
+				</div>
+				<div class="col-md-6  col-sm-6 col-xs-6  work-left work-left2"> 
+					<div class="col-md-6  col-sm-6 col-xs-6  work1">
+						<h4>AR.js</h4>
+						<p>AR.js 是 Jerome Etienne 开发的一款 Web AR 库，可以用十行 HTML 实现 AR，具有 60+ FPS 的帧率。它主要封装了以下几个库：WebRTC, JSARToolKit, Three.js。 </p></div>
+					<div class="col-md-6  col-sm-6 col-xs-6  work2">
+						<h5> 开发框架</h5>
+						<span></span>
+					</div>
+				</div>
+			</div>
+			<div class="work-info"> 
+				<div class="col-md-6  col-sm-6 col-xs-6"> 
+				</div>
+				<div class="col-md-6  col-sm-6 col-xs-6  work-right"> 
+					<div class="col-md-6  col-sm-6 col-xs-6 work2">
+						<span></span>
+						<h5>技术背景</h5>
+					</div>	
+					<div class="col-md-6  col-sm-6 col-xs-6  work-right1">
+						<h4>WebRTC 获取视频流</h4>
+						<p>WebRTC（Web 实时通信，Web Real-Time Communication），是一个支持网页浏览器进行实时语音对话或视频对话的技术。通过WebRTC,可以通过网页唤起用户的摄像头，并且实时获取用户摄像头的图像数据。</p>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+			<div class="work-sec-2">
+			<div class="work-info"> 
+				<div class="col-md-6  col-sm-6 col-xs-6  work-right work-right2"> 
+				</div>
+				<div class="col-md-6  col-sm-6 col-xs-6  work-left work-left2 "> 
+					<div class="col-md-6 col-sm-6 col-xs-6  work1">
+						<h4>JSARToolKit 识别与追踪</h4>
+						<p>JSARToolKit工作原理是跟踪视频流中的特殊标记(AR markers)，JSARToolKit 能够分辨出它们在视频流中的位置以及它们指向哪个方向，通过获得 AR markers 的位置和方向，便可以在影像上正确的画出 3D 对象，让其仿佛就在其中。</p></div>
+					<div class="col-md-6  col-sm-6 col-xs-6  work2">
+						<h5> 技术背景</h5>
+						<span></span>
+					</div>
+				</div>
+			</div>
+			<div class="work-info"> 
+				<div class="col-md-6  col-sm-6 col-xs-6 "> 
+				</div>
+				<div class="col-md-6  col-sm-6 col-xs-6  work-right"> 
+					<div class="col-md-6  col-sm-6 col-xs-6  work2">
+						<span></span>
+						<h5>技术背景</h5>
+					</div>	
+					<div class="col-md-6 col-sm-6 col-xs-6  work-right1">
+						<h4>Three.js 渲染与交互</h4>
+						<p>Three.js 是基于 WebGL 的渲染库，将繁琐 API 进行了封装优化，开发者可以用可读性更好的代码在前端书写 WebGL，实现虚拟环境及 3D 模型的渲染和显示。</p> </div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+			<span class="edu-circle"></span>
+			</div>
+		</div>
+	</div>
+<!--//Education-->
+	
+<!-- footer -->
+<div class="agileits_w3layouts-footer text-center">
+	<div class="container">
+		<p>Copyright &copy; 2020.Company name All rights reserved. CUC WebAR</p>
+	</div>
+</div>	
+
+</body>
+</html>

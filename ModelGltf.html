@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Hello WebAR Model Gltf</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="shortcut icon" href="#" />
+	</head>
+
+	<body style='margin : 0px; overflow: hidden; font-family: Monospace;-webkit-transform:translate3d(0,0,0);'  >
+
+		<script src='build/three.js'></script>
+		<script src="build/ar.js"></script>
+		<script type="module">
+			import { GUI } from './build/jsm/dat.gui.module.js';
+			import { GLTFLoader } from './build/jsm/GLTFLoader.js';
+
+			var camera, scene, renderer, loader;
+			var gltf, mixer, gui;
+			var arToolkitSource, arToolkitContext;
+			var clock = new THREE.Clock();
+			var markerRoot1;
+
+			var scenes = {
+				'Milk Truck': {
+					name: 'Cesium Milk Truck',
+					url: 'models/CesiumMilkTruck.gltf',
+					//objectRotation: new THREE.Euler( 45, 90, 270 ),
+					addLights: true,
+					shadows: true,
+				},
+				'Bee': {
+					name: 'Bee',
+					url: 'models/Bee.glb',
+					objectScale: new THREE.Vector3( 0.1, 0.1, 0.1 ),
+					//objectPosition: new THREE.Vector3( 0.2, 0.1, 0 ),
+					//objectRotation: new THREE.Euler( 45, 90, 270 ),
+					addLights: true,
+					shadows: true,
+				},
+				'Horse': {
+					name: 'Horse',
+					url: 'models/Horse.glb',
+					objectScale: new THREE.Vector3( 0.02, 0.02, 0.02 ),
+					//objectRotation: new THREE.Euler( 45, 90, 270 ),
+					addLights: true,
+					shadows: true,
+				},
+				'Parrot': {
+					name: 'Parrot',
+					url: 'models/Parrot.glb',
+					objectScale: new THREE.Vector3( 0.05, 0.05, 0.05 ),
+					//objectRotation: new THREE.Euler( 45, 90, 270 ),
+					addLights: true,
+					shadows: true,
+				},
+			};
+
+			var state = {
+				scene: Object.keys( scenes )[ 0 ],
+				playAnimation: true
+			};
+
+			function onload() {
+				//renderer
+				renderer = new THREE.WebGLRenderer({
+					antialias : true,    //开启抗锯齿
+					alpha: true          //开启背景透明
+				});
+				renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.domElement.style.position = 'absolute'
+				renderer.domElement.style.top = '0px'
+				renderer.domElement.style.left = '0px'
+				document.body.appendChild( renderer.domElement );
+
+				buildGUI();
+				initScene( scenes[ state.scene ] );
+				animate();
+			}
+
+
+			function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
+			function onError(xhr) { console.log( 'An error happened' ); }
+
+
+			function initScene( sceneInfo ) {
+				//scene,camera,light
+				scene = new THREE.Scene();
+				camera = new THREE.Camera();
+				scene.add( camera );
+
+				let ambientLight = new THREE.AmbientLight( 0xcccccc, 1.0 );
+				scene.add( ambientLight );
+
+				// setup arToolkitSource
+				arToolkitSource = new THREEx.ArToolkitSource({
+					sourceType : 'webcam',
+				});
+
+				arToolkitSource.init(function onReady(){ onResize() });
+	
+				// handle resize event
+				window.addEventListener('resize', function(){ onResize() });
+	
+				// create atToolkitContext
+				arToolkitContext = new THREEx.ArToolkitContext({
+					cameraParametersUrl: 'data/camera_para.dat',
+					detectionMode: 'mono'
+				});
+	
+				// copy projection matrix to camera when initialization complete
+				arToolkitContext.init( function onCompleted(){
+					camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+				});
+
+				markerRoot1 = new THREE.Group();
+				scene.add(markerRoot1);
+				let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
+					type: 'pattern', patternUrl: "data/letterA.patt",
+				})
+
+				if ( sceneInfo.addLights ) {
+
+					let pointLight = new THREE.PointLight("#ffffff");
+        			pointLight.position.set(2, 8, 2);
+        			pointLight.castShadow = true;//开启阴影投射
+        			scene.add(pointLight);
+
+				}
+
+				if ( sceneInfo.shadows ) {
+
+					renderer.shadowMap.enabled = true;
+					renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+				}
+
+
+				loader = new GLTFLoader();
+				var url = sceneInfo.url;
+				loader.load( url, function ( data ) {
+					gltf = data;
+					var object = gltf.scene;
+					object.position.set(0, 0, 0);
+
+					if ( sceneInfo.objectRotation ) {
+
+						object.rotation.copy( sceneInfo.objectRotation );
+
+					}
+
+					if ( sceneInfo.objectScale ) {
+
+						object.scale.copy( sceneInfo.objectScale );
+
+					}
+
+
+					object.traverse( function ( node ) {
+
+						if ( node.isMesh || node.isLight ) node.castShadow = true;
+
+					} );
+
+					var animations = gltf.animations;
+
+					if ( animations && animations.length ) {
+
+						mixer = new THREE.AnimationMixer( object );
+
+						for ( var i = 0; i < animations.length; i ++ ) {
+
+							var animation = animations[ i ];
+
+							//keeps animation from looping cleanly. Clip it at 3 seconds
+							if ( sceneInfo.animationTime ) {
+
+								animation.duration = sceneInfo.animationTime;
+
+							}
+
+							var action = mixer.clipAction( animation );
+
+							if ( state.playAnimation ) action.play();
+
+						}
+
+					}
+
+					markerRoot1.add( object );
+
+				}, onProgress, onError );
+
+			}
+
+
+			function update()
+			{
+				// update artoolkit on every frame
+				if ( arToolkitSource.ready !== false )
+					arToolkitContext.update( arToolkitSource.domElement );
+			}
+
+			function onResize(){
+				arToolkitSource.onResize()	
+				arToolkitSource.copySizeTo(renderer.domElement)	
+				if ( arToolkitContext.arController !== null )
+				{
+					arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+				}	
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				if ( mixer ) mixer.update( clock.getDelta() );
+
+				renderer.render( scene, camera );
+
+				update();
+
+			}
+
+
+			function buildGUI() {
+
+				gui = new GUI( { width: 200 } );
+				gui.domElement.parentElement.style.zIndex = 101;
+
+				var sceneCtrl = gui.add( state, 'scene', Object.keys( scenes ) );
+				sceneCtrl.onChange( reload );
+
+				var animCtrl = gui.add( state, 'playAnimation' );
+				animCtrl.onChange( toggleAnimations );
+
+			}
+
+
+			function toggleAnimations() {
+
+				for ( var i = 0; i < gltf.animations.length; i ++ ) {
+
+					var clip = gltf.animations[ i ];
+					var action = mixer.existingAction( clip );
+
+					state.playAnimation ? action.play() : action.stop();
+
+				}
+
+			}
+
+			function reload() {
+
+				if ( loader && mixer ) mixer.stopAllAction();
+
+				initScene( scenes[ state.scene ] );
+
+			}
+
+			onload();
+
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Hello WebAR Gift Obj</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="shortcut icon" href="#" />
+	</head>
+
+	<body style='margin : 0px; overflow: hidden; font-family: Monospace;-webkit-transform:translate3d(0,0,0);'  >
+
+		<script src='build/three.js'></script>
+		<script src="build/ar.js"></script>
+		<script type="module">
+			//import * as THREE from './build/three.module.js';
+			import Stats from './build/jsm/stats.module.js';
+			import { MTLLoader } from './build/jsm/MTLLoader.js';
+			import { OBJLoader } from './build/jsm/OBJLoader.js';
+
+			var stats, markerRoot1;
+			var camera, scene, renderer, light;
+			var clock = new THREE.Clock();
+			var arToolkitSource, arToolkitContext;
+			var obj;
+
+			init();
+			animate();
+
+			function init() {
+
+				// stats
+				stats = new Stats();
+				document.body.appendChild( stats.dom );
+
+				//scene,camera,light
+				scene = new THREE.Scene();
+				camera = new THREE.Camera();
+				scene.add(camera);
+	 			let ambientLight = new THREE.AmbientLight( 0xcccccc, 1.0 );
+				scene.add( ambientLight );
+				let pointLight = new THREE.PointLight("#ffffff");
+        		pointLight.position.set(2, 8, 2);
+        		pointLight.castShadow = true;//开启阴影投射
+        		scene.add(pointLight);
+				
+				//renderer
+				renderer = new THREE.WebGLRenderer({
+					antialias : true,    //开启抗锯齿
+					alpha: true          //开启背景透明
+				});
+				renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.domElement.style.position = 'absolute'
+				renderer.domElement.style.top = '0px'
+				renderer.domElement.style.left = '0px'
+				renderer.shadowMap.enabled = true;
+				document.body.appendChild( renderer.domElement );
+
+				// setup arToolkitSource
+				arToolkitSource = new THREEx.ArToolkitSource({
+					sourceType : 'webcam',
+				});
+
+				function onResize()
+				{
+					arToolkitSource.onResize()	
+					arToolkitSource.copySizeTo(renderer.domElement)	
+					if ( arToolkitContext.arController !== null )
+					{
+						arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)	
+					}	
+				}
+
+				arToolkitSource.init(function onReady(){
+					onResize()
+				});
+	
+				// handle resize event
+				window.addEventListener('resize', function(){
+					onResize()
+				});
+	
+				// setup arToolkitContext	
+				// create atToolkitContext
+				arToolkitContext = new THREEx.ArToolkitContext({
+					cameraParametersUrl: 'data/camera_para.dat',
+					detectionMode: 'mono'
+				});
+	
+				// copy projection matrix to camera when initialization complete
+				arToolkitContext.init( function onCompleted(){
+					camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+				});
+
+				// build markerControls
+				markerRoot1 = new THREE.Group();
+				scene.add(markerRoot1);
+				let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
+					type: 'pattern', patternUrl: "data/letterA.patt",
+				})
+
+
+				function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
+				function onError(xhr) { console.log( 'An error happened' ); }
+
+
+				// model
+				var mtlLoader = new MTLLoader();
+   				mtlLoader.setPath( 'models/' );
+   				mtlLoader.load( 'gift.mtl', function( materials ) {
+        			materials.preload();
+
+					var objLoader = new OBJLoader();
+        			objLoader.setMaterials( materials );
+        			objLoader.setPath( 'models/' );        
+        			objLoader.load( 'gift.obj', function ( object ) {
+						object.position.set(0,0,0);
+            			let box = new THREE.Box3().setFromObject(object);
+            			//根据模型真实尺寸调整合适比例
+            			object.scale.set(1/box.max.x,1/box.max.x,1/box.max.x);
+						markerRoot1.add( object );
+						//console.log(object.scale);
+						obj = object;
+					} , onProgress, onError);
+				});
+   			}
+
+
+			function update()
+			{
+				// update artoolkit on every frame
+				if ( arToolkitSource.ready !== false )
+					arToolkitContext.update( arToolkitSource.domElement );
+				if ( markerRoot1.visible )
+					obj.rotation.y += 0.005;
+			}
+
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				var delta = clock.getDelta();
+
+				renderer.render( scene, camera );
+
+				stats.update();
+				update();
+			}
+
+		</script>
+
+	</body>
+</html>
